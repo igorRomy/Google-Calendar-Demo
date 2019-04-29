@@ -8,76 +8,81 @@ using System.Threading.Tasks;
 
 namespace CalendarQuickstart.Logic
 {
-    public class Calendarss
-    {
-        // can a calendar be undeleted? 
+	public class Calendarss
+	{
+		// can a calendar be undeleted? 
 
-        static CalendarService service;
+		static CalendarService service;
 
-        public Calendarss()
-        {
-            service = GService.service;
-        }
+		public Calendarss()
+		{
+			service = GService.service;
+		}
 
-        public static IList<CalendarListEntry> getCalenders()
-        {
-            var calenders = service.CalendarList.List().Execute().Items;
+		public static IList<CalendarListEntry> getCalenders()
+		{
+			var calenders = service.CalendarList.List().Execute().Items;
 
-            return calenders;
-        }
+			return calenders;
+		}
 
-        public static Calendar getCalender(Calendar calenderToGet)
-        {        
-            Calendar calander = service.Calendars.Get(calenderToGet.Id).Execute();
+		public static Calendar getCalender(Calendar calenderToGet)
+		{
+			Calendar calander = service.Calendars.Get(calenderToGet.Id).Execute();
 
-            return calander;
-        }
-        //primary is the main calendar of this project
-        public static Calendar getCalenderById(String id = "primary")
-        {
-            Calendar calander = service.Calendars.Get(id).Execute();
+			return calander;
+		}
+		//primary is the main calendar of this project
+		public static Calendar getCalenderById(String id = "primary")
+		{
+			Calendar calander = service.Calendars.Get(id).Execute();
 
-            return calander;
-        }
-        //this is not with type Calander, make sure to use var or CalendarListEntry when using
-        public static CalendarListEntry getCalenderByName(String name)
-        {     
-            var calenders = getCalenders();
+			return calander;
+		}
+		//this is not with type Calander, make sure to use var or CalendarListEntry when using
+		public static CalendarListEntry getCalenderByName(String name)
+		{
+			var calenders = getCalenders();
 
-            foreach (CalendarListEntry cal in calenders)
-            {
-                if (cal.Summary == name)
-                {
-                    return cal;
-                }
-            }
+			foreach (CalendarListEntry cal in calenders)
+			{
+				if (cal.Summary == name)
+				{
+					return cal;
+				}
+			}
 
-            //calendar doesn't excist
-            return null;
-        }
+			//calendar doesn't excist
+			return null;
+		}
 
-        //you can only clear the primary calendar
-        //BE AWARE this is a very desctructive method, all events will be deleted
-        //test string
-        //returns id if failed
-        public static string clearCalendar() {
+		//you can only clear the primary calendar
+		//BE AWARE this is a very desctructive method, all events will be deleted
+		//test string
+		//returns id if failed
+		public static string clearCalendar() {
 
-            return service.Calendars.Clear("primary").Execute();
-        }
+			return service.Calendars.Clear("primary").Execute();
+		}
 
-        //creates secondary calendar
-        public static Calendar newCalendar(string name, string location, string despcription, string secundaryCalendarId, string timeZone = "America/Los_Angeles")
-        {
+		//creates secondary calendar
+		public static Calendar newCalendar(string name, string location, string despcription, string timeZone = "America/Los_Angeles"){
+        
+			//calendar already excist if false
+			if (getCalenderByName(name) != null) {
+
+			
             Calendar newCalendar = new Calendar
-            {
-                Summary = name,
-                Location = location,
-                TimeZone = timeZone,
-                Description = despcription,
-                Id = secundaryCalendarId
-            };
-
-            return service.Calendars.Insert(newCalendar).Execute();
+			{
+				Summary = name,
+				Location = location,
+				TimeZone = timeZone,
+				Description = despcription,
+			};
+		   return service.Calendars.Insert(newCalendar).Execute();
+			}
+			Console.WriteLine("problem");
+         return null;
         }
 
         //Cannot change ID!

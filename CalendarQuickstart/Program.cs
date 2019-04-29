@@ -21,18 +21,14 @@ namespace CalendarQuickstart
 
 		 static void Main(string[] args) {
 
-			Attendee tes = new Attendee();
-
-			Person t = tes.getPerson("UUID2");
-			foreach (var g in t.Names) {
-				Console.WriteLine(g.GivenName);
-
-			}
+			GService t = new GService();
+			Calendarss c = new Calendarss();
+			Calendarss.newCalendar("testName", "testloc", "testDes");
 			Console.Read();
 
 
 		}
-			
+
 
 	}
 
